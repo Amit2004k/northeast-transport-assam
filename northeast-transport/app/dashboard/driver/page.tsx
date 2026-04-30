@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import {
   Truck, Check, X, Phone, MapPin, Navigation,
-  IndianRupee, Clock, Star, Toggle, Loader2, Package
+  IndianRupee, Clock, Star, Loader2, Package
 } from 'lucide-react'
 import { getPendingBookings, acceptBooking, updateBookingStatus } from '@/services/bookings'
 import { getCurrentProfile } from '@/services/auth'
