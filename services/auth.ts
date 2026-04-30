@@ -1,16 +1,11 @@
 import { createClient } from '@/lib/supabase/client'
 
-export async function getCurrentProfile() {
+export async function signUp(email: string, password: string) {
   const supabase = createClient()
+  return supabase.auth.signUp({ email, password })
+}
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
-
-  const { data } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  return data
+export async function signIn(email: string, password: string) {
+  const supabase = createClient()
+  return supabase.auth.signInWithPassword({ email, password })
 }

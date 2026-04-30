@@ -1,30 +1,11 @@
 import { createClient } from '@/lib/supabase/client'
 
-export async function getPendingBookings() {
+export async function createBooking(data: any) {
   const supabase = createClient()
-
-  const { data } = await supabase
-    .from('bookings')
-    .select('*')
-    .eq('status', 'requested')
-
-  return data || []
+  return supabase.from('bookings').insert([data])
 }
 
-export async function acceptBooking(id: string) {
+export async function getCustomerBookings(userId: string) {
   const supabase = createClient()
-
-  return supabase
-    .from('bookings')
-    .update({ status: 'accepted' })
-    .eq('id', id)
-}
-
-export async function updateBookingStatus(id: string, status: string) {
-  const supabase = createClient()
-
-  return supabase
-    .from('bookings')
-    .update({ status })
-    .eq('id', id)
+  return supabase.from('bookings').select('*').eq('customer_id', userId)
 }

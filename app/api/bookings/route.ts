@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { calculateDistance, calculatePrice } from '@/services/pricing'
 
 export async function GET(request: NextRequest) {
-  const supabase = createServerClient()
+  const supabase = createClient() ✅
+
   const { searchParams } = new URL(request.url)
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   const status = searchParams.get('status')
   const role = searchParams.get('role')
@@ -32,25 +35,30 @@ export async function GET(request: NextRequest) {
   query = query.order('created_at', { ascending: false }).limit(50)
 
   const { data, error } = await query
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 
   return NextResponse.json({ data })
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = createServerClient()
+  const supabase = createClient() ✅
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   const body = await request.json()
+
   const {
     pickupAddress, pickupLat, pickupLng,
     dropAddress, dropLat, dropLng,
     vehicleType, goodsDescription, weightKg
   } = body
 
-  // Validate required fields
   if (!pickupAddress || !dropAddress || !vehicleType) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
@@ -69,17 +77,19 @@ export async function POST(request: NextRequest) {
       drop_lat: dropLat,
       drop_lng: dropLng,
       distance_km: distanceKm,
-      estimated_price: priceEstimate.totalFare,
+      estimated_price: priceEstimate.totalPrice, // ⚠️ make sure name matches pricing.ts
       vehicle_type: vehicleType,
       goods_description: goodsDescription || null,
       weight_kg: weightKg || null,
       status: 'requested',
       requested_at: new Date().toISOString(),
-    } as never) // ✅ FIX APPLIED HERE
+    } as never)
     .select()
     .single()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 
   return NextResponse.json({ data }, { status: 201 })
 }
