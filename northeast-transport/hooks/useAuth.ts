@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { User } from '@supabase/supabase-js'
+import type { User, AuthChangeEvent, Session } from '@supabase/supabase-js'
 import type { Database } from '@/lib/supabase/database.types'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
@@ -20,18 +20,21 @@ export function useAuth() {
       .select('*')
       .eq('id', userId)
       .single()
+
     setProfile(data)
   }, [supabase])
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (event: AuthChangeEvent, session: Session | null) => {
         setUser(session?.user ?? null)
+
         if (session?.user) {
           await fetchProfile(session.user.id)
         } else {
           setProfile(null)
         }
+
         setLoading(false)
       }
     )
@@ -39,16 +42,28 @@ export function useAuth() {
     // Initial load
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
-      if (user) fetchProfile(user.id)
+
+      if (user) {
+        fetchProfile(user.id)
+      }
+
       setLoading(false)
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [supabase, fetchProfile])
 
   const signOut = async () => {
     await supabase.auth.signOut()
   }
 
-  return { user, profile, loading, signOut, isAuthenticated: !!user }
+  return {
+    user,
+    profile,
+    loading,
+    signOut,
+    isAuthenticated: !!user
+  }
 }
