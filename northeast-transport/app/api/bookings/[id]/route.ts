@@ -31,7 +31,7 @@ export async function PATCH(
 
   const { data, error } = await supabase
     .from('bookings')
-    .update(updates)
+    .update(updates as any)
     .eq('id', params.id)
     .select()
     .single()
