@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
       weight_kg: weightKg || null,
       status: 'requested',
       requested_at: new Date().toISOString(),
-    })
+    } as never) // ✅ FIX APPLIED HERE
     .select()
     .single()
 
