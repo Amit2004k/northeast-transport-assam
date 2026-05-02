@@ -3,162 +3,49 @@
 @tailwind utilities;
 
 :root {
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Syne', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'DM Sans', 'Inter', system-ui, sans-serif;
 }
 
 @layer base {
-  * {
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    background-color: #0a0a0f;
-    color: white;
-    font-family: var(--font-body);
-  }
-
-  ::selection {
-    background-color: #f97316;
-    color: white;
-  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background-color: #0a0a0f; color: white; font-family: var(--font-body); }
+  ::selection { background-color: #f97316; color: white; }
 }
 
 @layer components {
-  .btn-primary {
-    @apply bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-3 rounded-xl 
-           transition-all duration-200 active:scale-95 shadow-lg shadow-brand-500/20;
-  }
-
-  .btn-secondary {
-    @apply bg-dark-700 hover:bg-dark-600 text-white font-medium px-6 py-3 rounded-xl 
-           border border-white/10 transition-all duration-200 active:scale-95;
-  }
-
-  .btn-danger {
-    @apply bg-red-500/20 hover:bg-red-500/30 text-red-400 font-medium px-6 py-3 rounded-xl 
-           border border-red-500/20 transition-all duration-200;
-  }
-
-  .card {
-    @apply bg-dark-800 border border-white/5 rounded-2xl p-5;
-  }
-
-  .card-hover {
-    @apply card hover:border-white/10 hover:bg-dark-700 transition-all duration-200 cursor-pointer;
-  }
-
-  .input-field {
-    @apply w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-white 
-           placeholder:text-white/30 focus:outline-none focus:border-brand-500 transition-colors;
-  }
-
-  .label {
-    @apply text-sm font-medium text-white/60 mb-1.5 block;
-  }
-
-  .badge {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
-  }
-
-  .badge-success {
-    @apply badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/20;
-  }
-
-  .badge-warning {
-    @apply badge bg-amber-500/20 text-amber-400 border border-amber-500/20;
-  }
-
-  .badge-danger {
-    @apply badge bg-red-500/20 text-red-400 border border-red-500/20;
-  }
-
-  .badge-info {
-    @apply badge bg-blue-500/20 text-blue-400 border border-blue-500/20;
-  }
-
-  .badge-brand {
-    @apply badge bg-brand-500/20 text-brand-400 border border-brand-500/20;
-  }
-
-  .stat-card {
-    @apply card flex flex-col gap-1;
-  }
-
-  .page-header {
-    @apply text-2xl font-display font-bold text-white;
-  }
-
-  .section-title {
-    @apply text-lg font-display font-semibold text-white;
-  }
+  .btn-primary { @apply bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 active:scale-95 shadow-lg shadow-brand-500/20; }
+  .btn-secondary { @apply bg-dark-700 hover:bg-dark-600 text-white font-medium px-6 py-3 rounded-xl border border-white/10 transition-all duration-200 active:scale-95; }
+  .btn-danger { @apply bg-red-500/20 hover:bg-red-500/30 text-red-400 font-medium px-6 py-3 rounded-xl border border-red-500/20 transition-all duration-200; }
+  .card { @apply bg-dark-800 border border-white/5 rounded-2xl p-5; }
+  .card-hover { @apply card hover:border-white/10 hover:bg-dark-700 transition-all duration-200 cursor-pointer; }
+  .input-field { @apply w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-brand-500 transition-colors; }
+  .label { @apply text-sm font-medium text-white/60 mb-1.5 block; }
+  .badge { @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium; }
+  .badge-success { @apply badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/20; }
+  .badge-warning { @apply badge bg-amber-500/20 text-amber-400 border border-amber-500/20; }
+  .badge-danger { @apply badge bg-red-500/20 text-red-400 border border-red-500/20; }
+  .badge-info { @apply badge bg-blue-500/20 text-blue-400 border border-blue-500/20; }
+  .badge-brand { @apply badge bg-brand-500/20 text-brand-400 border border-brand-500/20; }
+  .stat-card { @apply card flex flex-col gap-1; }
+  .page-header { @apply text-2xl font-display font-bold text-white; }
+  .section-title { @apply text-lg font-display font-semibold text-white; }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-gradient-to-r from-brand-400 to-amber-400 bg-clip-text text-transparent;
-  }
-
-  .bg-mesh {
-    background-image: 
-      radial-gradient(at 20% 30%, rgba(249, 115, 22, 0.08) 0px, transparent 50%),
-      radial-gradient(at 80% 70%, rgba(249, 115, 22, 0.05) 0px, transparent 50%);
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+  .text-gradient { @apply bg-gradient-to-r from-brand-400 to-amber-400 bg-clip-text text-transparent; }
+  .bg-mesh { background-image: radial-gradient(at 20% 30%, rgba(249,115,22,0.08) 0px, transparent 50%), radial-gradient(at 80% 70%, rgba(249,115,22,0.05) 0px, transparent 50%); }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
 }
 
-/* Leaflet map overrides */
-.leaflet-container {
-  background: #111118 !important;
-  font-family: var(--font-body) !important;
-}
+.leaflet-container { background: #111118 !important; font-family: var(--font-body) !important; }
+.leaflet-tile { filter: brightness(0.7) saturate(0.8) !important; }
+.leaflet-popup-content-wrapper { background: #1a1a26 !important; color: white !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 12px !important; box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important; }
+.leaflet-popup-tip { background: #1a1a26 !important; }
 
-.leaflet-tile {
-  filter: brightness(0.7) saturate(0.8) !important;
-}
-
-.leaflet-popup-content-wrapper {
-  background: #1a1a26 !important;
-  color: white !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
-}
-
-.leaflet-popup-tip {
-  background: #1a1a26 !important;
-}
-
-/* Loading skeleton */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.skeleton {
-  background: linear-gradient(90deg, #1a1a26 25%, #242436 50%, #1a1a26 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 8px;
-}
-
-/* Mobile bottom nav safe area */
-.bottom-nav {
-  padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
-}
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.skeleton { background: linear-gradient(90deg, #1a1a26 25%, #242436 50%, #1a1a26 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+.bottom-nav { padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem); }
