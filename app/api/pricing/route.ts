@@ -1,60 +1,24 @@
-// Distance calculation (Haversine formula)
-export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-  const R = 6371
-  const dLat = (lat2 - lat1) * Math.PI / 180
-  const dLon = (lon2 - lon1) * Math.PI / 180
+import { NextRequest, NextResponse } from 'next/server'
+import { calculateDistance, calculatePrice, VEHICLE_CONFIGS } from '@/services/pricing'
 
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) *
-    Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2)
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  return R * c
+export async function POST(request: NextRequest) {
+  const body = await request.json()
+  const { pickupLat, pickupLng, dropLat, dropLng, vehicleType } = body
+  if (!pickupLat || !pickupLng || !dropLat || !dropLng || !vehicleType) return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
+  if (!Object.keys(VEHICLE_CONFIGS).includes(vehicleType)) return NextResponse.json({ error: 'Invalid vehicle type' }, { status: 400 })
+  const distanceKm = calculateDistance(pickupLat, pickupLng, dropLat, dropLng)
+  const estimate = calculatePrice(distanceKm, vehicleType as keyof typeof VEHICLE_CONFIGS)
+  return NextResponse.json({ data: { ...estimate, vehicleType, vehicleName: VEHICLE_CONFIGS[vehicleType as keyof typeof VEHICLE_CONFIGS].displayName } })
 }
 
-// Vehicle configs (OBJECT ✅)
-export const VEHICLE_CONFIGS = {
-  pickup: {
-    displayName: "Pickup",
-    baseFare: 100,
-    perKm: 15,
-    emoji: "🚛",
-    capacityKg: 750
-  },
-  mini_truck: {
-    displayName: "Mini Truck",
-    baseFare: 200,
-    perKm: 20,
-    emoji: "🚚",
-    capacityKg: 1500
-  }
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url)
+  const pickupLat = parseFloat(searchParams.get('pickupLat') || '0')
+  const pickupLng = parseFloat(searchParams.get('pickupLng') || '0')
+  const dropLat = parseFloat(searchParams.get('dropLat') || '0')
+  const dropLng = parseFloat(searchParams.get('dropLng') || '0')
+  if (!pickupLat || !dropLat) return NextResponse.json({ error: 'Missing coordinates' }, { status: 400 })
+  const distanceKm = calculateDistance(pickupLat, pickupLng, dropLat, dropLng)
+  const estimates = Object.entries(VEHICLE_CONFIGS).map(([key, config]) => ({ vehicleType: key, vehicleName: config.displayName, emoji: config.emoji, capacityKg: config.capacityKg, ...calculatePrice(distanceKm, key as keyof typeof VEHICLE_CONFIGS) }))
+  return NextResponse.json({ data: { distanceKm, estimates } })
 }
-
-// Price calculation
-export function calculatePrice(distance: number, vehicleType: keyof typeof VEHICLE_CONFIGS) {
-  const config = VEHICLE_CONFIGS[vehicleType]
-
-  const total = config.baseFare + (distance * config.perKm)
-
-  return {
-    distanceKm: distance,
-    totalPrice: Math.round(total)
-  }
-}
-
-// Optional (for UI)
-export const GUWAHATI_LOCATIONS = [
-  "Beltola",
-  "Dispur",
-  "Paltan Bazaar",
-  "Ganeshguri"
-]
-
-export const ASSAM_CITIES = [
-  "Guwahati",
-  "Dibrugarh",
-  "Silchar",
-  "Jorhat"
-]
