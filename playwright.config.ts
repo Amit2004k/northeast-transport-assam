@@ -11,19 +11,10 @@ export default defineConfig({
     baseURL: process.env.TEST_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
   },
   projects: [
-    {
-      name: 'Mobile Chrome',
-      use: {
-        ...devices['Pixel 7'],
-      },
-    },
-    {
-      name: 'Desktop Chrome',
-      use: { ...devices['Desktop Chrome'] },
-    },
+    { name: 'Mobile Chrome', use: { ...devices['Pixel 7'] } },
+    { name: 'Desktop Chrome', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: {
     command: 'npm run dev',
