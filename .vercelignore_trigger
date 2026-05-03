@@ -1,0 +1,2 @@
+# Build trigger
+NODE_ENV=production
