@@ -29,13 +29,17 @@
   .badge-info { @apply badge bg-blue-500/20 text-blue-400 border border-blue-500/20; }
   .badge-brand { @apply badge bg-brand-500/20 text-brand-400 border border-brand-500/20; }
   .stat-card { @apply card flex flex-col gap-1; }
-  .page-header { @apply text-2xl font-display font-bold text-white; }
-  .section-title { @apply text-lg font-display font-semibold text-white; }
+  .page-header { @apply text-2xl font-bold text-white; font-family: var(--font-display); }
+  .section-title { @apply text-lg font-semibold text-white; font-family: var(--font-display); }
 }
 
 @layer utilities {
   .text-gradient { @apply bg-gradient-to-r from-brand-400 to-amber-400 bg-clip-text text-transparent; }
-  .bg-mesh { background-image: radial-gradient(at 20% 30%, rgba(249,115,22,0.08) 0px, transparent 50%), radial-gradient(at 80% 70%, rgba(249,115,22,0.05) 0px, transparent 50%); }
+  .bg-mesh {
+    background-image:
+      radial-gradient(at 20% 30%, rgba(249, 115, 22, 0.08) 0px, transparent 50%),
+      radial-gradient(at 80% 70%, rgba(249, 115, 22, 0.05) 0px, transparent 50%);
+  }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
